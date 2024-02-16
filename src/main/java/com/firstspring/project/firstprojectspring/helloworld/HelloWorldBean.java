@@ -18,7 +18,7 @@ public class HelloWorldBean {
         this.message = message;
     }
 
-    public HelloWorldBean(String message){
+    public HelloWorldBean(String message) {
         this.message = message;
     }
 }

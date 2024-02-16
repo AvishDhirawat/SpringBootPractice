@@ -18,13 +18,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class UserResource {
 
     public UserDAOService service;
-    public UserResource(UserDAOService service){
+
+    public UserResource(UserDAOService service) {
         this.service = service;
     }
 
     // GET /users
     @GetMapping("/users")
-    public List<User> retrieveAllUsers(){
+    public List<User> retrieveAllUsers() {
         return service.findAll();
     }
 
@@ -37,12 +38,12 @@ public class UserResource {
     // GET /users/{id}
     @GetMapping("/users/{id}")
 //    public User retrieveSpecificUser(@PathVariable int id){
-    public EntityModel<User> retrieveSpecificUser(@PathVariable int id){
+    public EntityModel<User> retrieveSpecificUser(@PathVariable int id) {
 
         User user = service.findOne(id);
 
-        if(user == null){
-            throw new UserNotFoundException("id:"+ id);
+        if (user == null) {
+            throw new UserNotFoundException("id:" + id);
         }
 
         EntityModel<User> entityModel = EntityModel.of(user); // Added later on after the Entity Model Creation
@@ -57,13 +58,13 @@ public class UserResource {
 
     // Delete /users/{id}
     @DeleteMapping("/users/{id}")
-    public void deleteSpecificUser(@PathVariable int id){
+    public void deleteSpecificUser(@PathVariable int id) {
         service.deleteOne(id);
     }
 
     //POST /users
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User savedUser = service.save(user);
 //        return ResponseEntity.created(null).build();
         // For Location in status code response

@@ -16,7 +16,7 @@ import java.util.List;
 public class FilteringController {
 
     @GetMapping("/filtering") //field2
-    public MappingJacksonValue filtering(){ // For static filtering it was SomeBean filtering()
+    public MappingJacksonValue filtering() { // For static filtering it was SomeBean filtering()
         // For Dynamic Filtering
         SomeBean someBean = new SomeBean("value1", "value2", "value3");
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(someBean);
@@ -30,7 +30,7 @@ public class FilteringController {
     }
 
     @GetMapping("/filtering-list") //field1
-    public MappingJacksonValue filteringList(){ // For static filtering it was List<SomeBean> filtering()
+    public MappingJacksonValue filteringList() { // For static filtering it was List<SomeBean> filtering()
         // Dynamic Filtering
         List<SomeBean> list = Arrays.asList(new SomeBean("value1", "value2", "value3"), new SomeBean("value4", "value5", "value6"));
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(list);

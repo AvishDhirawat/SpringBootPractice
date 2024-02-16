@@ -14,7 +14,8 @@ public class Post {
     @Size(min = 8)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY) // One User can have Many Posts i.e. Many - One Relationship // We don't want user details to be fetched with post details, so we used FetchType.LAZY
+    @ManyToOne(fetch = FetchType.LAZY)
+    // One User can have Many Posts i.e. Many - One Relationship // We don't want user details to be fetched with post details, so we used FetchType.LAZY
     @JsonIgnore // We don't want users to be included with post's API request
     private User user;
 

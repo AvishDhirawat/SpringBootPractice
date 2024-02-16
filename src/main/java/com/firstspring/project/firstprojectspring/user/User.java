@@ -1,6 +1,7 @@
 package com.firstspring.project.firstprojectspring.user;
 
 // import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +16,10 @@ import java.util.List;
 @Entity(name = "user_details")
 public class User {
 
-    protected User(){
+    protected User() {
 
     }
+
     @Id
     @GeneratedValue
     private Integer id;

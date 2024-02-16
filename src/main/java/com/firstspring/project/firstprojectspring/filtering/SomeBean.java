@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class SomeBean {
     private String field1;
 
-//    @JsonIgnore  // This is Static Filtering, and it is being used to hide field2 from API calls (it won't show with the get requests)
+    //    @JsonIgnore  // This is Static Filtering, and it is being used to hide field2 from API calls (it won't show with the get requests)
     private String field2;
     private String field3;
 

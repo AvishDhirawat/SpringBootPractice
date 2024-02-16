@@ -22,23 +22,24 @@ public class UserJPAResource {
 
     private UserRepository repository;
     private PostRepository postRepository;
-    public UserJPAResource(UserRepository repository, PostRepository postRepository){
+
+    public UserJPAResource(UserRepository repository, PostRepository postRepository) {
         this.repository = repository;
         this.postRepository = postRepository;
     }
 
     @GetMapping("/jpa/users")
-    public List<User> retrieveAllUsers(){
+    public List<User> retrieveAllUsers() {
         return repository.findAll();
     }
 
     @GetMapping("/jpa/users/{id}")
-    public EntityModel<User> retrieveSpecificUser(@PathVariable int id){
+    public EntityModel<User> retrieveSpecificUser(@PathVariable int id) {
 
         Optional<User> user = repository.findById(id);
 
-        if(user.isEmpty()){
-            throw new UserNotFoundException("id:"+ id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id:" + id);
         }
 
         EntityModel<User> entityModel = EntityModel.of(user.get());
@@ -51,16 +52,16 @@ public class UserJPAResource {
 
     // Delete /users/{id}
     @DeleteMapping("/jpa/users/{id}")
-    public void deleteSpecificUser(@PathVariable int id){
+    public void deleteSpecificUser(@PathVariable int id) {
         repository.deleteById(id);
     }
 
     @GetMapping("/jpa/users/{id}/posts")
-    public List<Post> retrievePostsForSpecificUser(@PathVariable int id){
+    public List<Post> retrievePostsForSpecificUser(@PathVariable int id) {
         Optional<User> user = repository.findById(id);
 
-        if(user.isEmpty()){
-            throw new UserNotFoundException("id:"+ id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id:" + id);
         }
 
         return user.get().getPosts();
@@ -69,7 +70,7 @@ public class UserJPAResource {
 
     //POST /users
     @PostMapping("/jpa/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User savedUser = repository.save(user);
 //        return ResponseEntity.created(null).build();
         // For Location in status code response
@@ -79,11 +80,11 @@ public class UserJPAResource {
     }
 
     @PostMapping("/jpa/users/{id}/posts")
-    public ResponseEntity<Object> createPostsForSpecificUser(@PathVariable int id, @Valid @RequestBody Post post){
+    public ResponseEntity<Object> createPostsForSpecificUser(@PathVariable int id, @Valid @RequestBody Post post) {
         Optional<User> user = repository.findById(id);
 
-        if(user.isEmpty()){
-            throw new UserNotFoundException("id:"+ id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id:" + id);
         }
 
         post.setUser(user.get());
