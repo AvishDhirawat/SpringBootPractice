@@ -1,7 +1,7 @@
 package com.firstspring.project.firstprojectspring.jpa;
 
+import com.firstspring.project.firstprojectspring.user.Post;
 import com.firstspring.project.firstprojectspring.user.User;
-import com.firstspring.project.firstprojectspring.user.UserDAOService;
 import com.firstspring.project.firstprojectspring.user.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
@@ -21,8 +21,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserJPAResource {
 
     private UserRepository repository;
-    public UserJPAResource(UserDAOService service, UserRepository repository){
+    private PostRepository postRepository;
+    public UserJPAResource(UserRepository repository, PostRepository postRepository){
         this.repository = repository;
+        this.postRepository = postRepository;
     }
 
     @GetMapping("/jpa/users")
@@ -53,6 +55,18 @@ public class UserJPAResource {
         repository.deleteById(id);
     }
 
+    @GetMapping("/jpa/users/{id}/posts")
+    public List<Post> retrievePostsForSpecificUser(@PathVariable int id){
+        Optional<User> user = repository.findById(id);
+
+        if(user.isEmpty()){
+            throw new UserNotFoundException("id:"+ id);
+        }
+
+        return user.get().getPosts();
+
+    }
+
     //POST /users
     @PostMapping("/jpa/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user){
@@ -62,6 +76,24 @@ public class UserJPAResource {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId()).toUri(); // /users/4 => /users /{id}, user.getId()
         // location - /users/4
         return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping("/jpa/users/{id}/posts")
+    public ResponseEntity<Object> createPostsForSpecificUser(@PathVariable int id, @Valid @RequestBody Post post){
+        Optional<User> user = repository.findById(id);
+
+        if(user.isEmpty()){
+            throw new UserNotFoundException("id:"+ id);
+        }
+
+        post.setUser(user.get());
+
+        Post savedPost = postRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedPost.getId()).toUri(); // /users/4 => /users /{id}, user.getId()
+
+        return ResponseEntity.created(location).build();
+
     }
 
 }
